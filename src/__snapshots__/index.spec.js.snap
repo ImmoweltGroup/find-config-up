@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`findConfigUp() should return the contents of the "package.json" with the given "packageJsonProperty" property if one was found up the filesystem tree 1`] = `
+Object {
+  "somePackageJsonProperty": true,
+}
+`;
+
+exports[`findConfigUp() should return the contents of the provided "rawConfigFileName" filename if one was found up the filesystem tree 1`] = `
+Object {
+  "someRawRcProperty": true,
+}
+`;
+
+exports[`findConfigUp() should return the defaults if no file was found 1`] = `
+Object {
+  "someDefaultsProperty": true,
+}
+`;

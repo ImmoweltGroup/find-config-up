@@ -1,0 +1,75 @@
+{
+  "name": "find-config-up",
+  "version": "0.0.0-development",
+  "private": false,
+  "author": "Immonet dev team <aegaeon@immonet.de> (https://immonet.de)",
+  "license": "MIT",
+  "description":
+    "Resolve your packages configuration from a .*rc or package.json with a given property up the file-tree.",
+  "main": "./dist/",
+  "engines": {
+    "node": ">=8.8.0"
+  },
+  "keywords": [
+    "find",
+    "up",
+    "config",
+    "resolve",
+    "rc",
+    "raw-config",
+    "find-up",
+    "package",
+    "json",
+    "configuration",
+    "parse"
+  ],
+  "scripts": {
+    "test": "npm run lint && npm run flow && npm run jest:coverage",
+    "lint": "eslint src",
+    "jest": "jest",
+    "jest:watch": "npm run jest -- --watch",
+    "jest:coverage": "npm run jest -- --coverage",
+    "build:clean": "rimraf dist",
+    "build:babel": "babel src --out-dir dist --ignore spec.js",
+    "build:flow": "flow-copy-source -v src dist --ignore='*.spec.js'",
+    "build": "npm run build:babel && npm run build:flow",
+    "dev": "nodemon --quiet --watch src --exec 'npm run build'",
+    "flow": "flow",
+    "flow-typed": "flow-typed",
+    "flow-typed-install": "flow-typed install --ignoreDeps=peer --overwrite",
+    "prepare": "npm run flow-typed-install || true",
+    "prepublishOnly": "npm run build",
+    "precommit": "lint-staged && npm test"
+  },
+  "lint-staged": {
+    "**/*.{js,json,css}": ["prettier --write", "git add"]
+  },
+  "dependencies": {
+    "find-up": "^2.1.0",
+    "lodash": "^4.17.4"
+  },
+  "devDependencies": {
+    "@immowelt/babel-preset-immowelt-node": "^1.1.0",
+    "@immowelt/eslint-config-immowelt-react": "^2.0.2",
+    "@immowelt/jest-preset-node": "^1.0.0",
+    "@immowelt/styleguide-javascript": "^1.0.6",
+    "babel-cli": "^6.26.0",
+    "eslint": "^4.9.0",
+    "flow-bin": "^0.58.0",
+    "flow-copy-source": "^1.2.1",
+    "flow-typed": "^2.2.1",
+    "husky": "^0.14.3",
+    "jest": "^21.0.2",
+    "lint-staged": "^4.1.2",
+    "mock-fs": "^4.4.2",
+    "prettier": "^1.6.1",
+    "rimraf": "^2.6.1"
+  },
+  "jest": {
+    "preset": "@immowelt/jest-preset-node"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ImmoweltGroup/find-config-up.git"
+  }
+}
