@@ -2,14 +2,14 @@
 We are open and grateful for any contributions made by you!
 
 ## Reporting Issues
-Before opening an issue, please make sure that your issue hasn't been already reported by using the search functionality of the [issue tracker](https://github.com/ImmoweltGroup/util-create-project-config/issues).
+Before opening an issue, please make sure that your issue hasn't been already reported by using the search functionality of the [issue tracker](https://github.com/ImmoweltGroup/find-config-up/issues).
 
 ## Development
-Visit the [issue tracker](https://github.com/ImmoweltGroup/util-create-project-config/issues) to find a list of open issues that are easy to pick up or need some love.
+Visit the [issue tracker](https://github.com/ImmoweltGroup/find-config-up/issues) to find a list of open issues that are easy to pick up or need some love.
 
 Fork, then clone the repo:
 ```
-git clone https://github.com/your-username/util-create-project-config.git
+git clone https://github.com/your-username/find-config-up.git
 ```
 
 ### Building
@@ -59,7 +59,7 @@ So in case you want to submit a bugfix, you should execute `git commit -m "BUGFI
 
 ## Submitting Changes
 
-* Open a new issue in the [issue tracker](https://github.com/ImmoweltGroup/util-create-project-config/issues).
+* Open a new issue in the [issue tracker](https://github.com/ImmoweltGroup/find-config-up/issues).
 * Fork the repo.
 * Create a new feature branch based off the `master` branch.
 * Make sure all tests pass and there are no linting errors.
