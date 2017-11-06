@@ -45,11 +45,11 @@ const findConfigUp = require('find-config-up');
 ```
 
 #### Options
-##### `rawConfigFileName: string`
-The file name of your preffered `.rc` file, e.g. `.babelrc`.
+##### `rawConfigFileName: string` (Optional)
+The file name of your preffered `.rc` file, e.g. `.babelrc`, which should be resolved up the file-system tree.
 
 ##### `packageJsonProperty: string`
-The property name which should be resolved as a fallback in all `package.json` files up the tree.
+The property name which should be resolved in the `package.json` files up the file-system tree.
 
 ##### `defaults: Object`
 The defaults which will be recursively merged with the results from the file-system.

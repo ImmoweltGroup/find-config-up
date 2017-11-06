@@ -1,9 +1,9 @@
 // @flow
 
 type OptionsType = {
-  rawConfigFileName: string,
   packageJsonProperty: string,
-  defaults?: Object,
+  rawConfigFileName?: string,
+  defaults: Object,
   cwd?: string
 };
 
@@ -24,12 +24,17 @@ async function findConfigUp(options: OptionsType): Promise<any> {
     rawConfigFileName,
     packageJsonProperty
   } = options;
-  const rawConfigPath = await _utils.findUp(rawConfigFileName, {cwd});
   let config;
 
-  if (rawConfigPath && rawConfigPath.length) {
-    config = await readJson(rawConfigPath);
-  } else {
+  if (rawConfigFileName && rawConfigFileName.length) {
+    const rawConfigPath = await _utils.findUp(rawConfigFileName, {cwd});
+
+    if (rawConfigPath && rawConfigPath.length) {
+      config = await readJson(rawConfigPath);
+    }
+  }
+
+  if (!config) {
     config = await readPackageJsonUp(packageJsonProperty, cwd);
   }
 

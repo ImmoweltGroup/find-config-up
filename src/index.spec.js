@@ -40,7 +40,8 @@ describe('findConfigUp()', () => {
     const cfg = await findConfigUp({
       rawConfigFileName: '.foorc',
       packageJsonProperty: 'foo',
-      cwd: '/foo/raw-config/nested/folder'
+      cwd: '/foo/raw-config/nested/folder',
+      defaults: {}
     });
 
     expect(cfg).toMatchSnapshot();
@@ -56,7 +57,8 @@ describe('findConfigUp()', () => {
     const cfg = await findConfigUp({
       rawConfigFileName: '.foorc',
       packageJsonProperty: 'foo',
-      cwd: '/foo/package-json/nested/folder'
+      cwd: '/foo/package-json/nested/folder',
+      defaults: {}
     });
 
     expect(cfg).toMatchSnapshot();
@@ -66,7 +68,6 @@ describe('findConfigUp()', () => {
     findUp.mockReturnValue(null);
 
     const cfg = await findConfigUp({
-      rawConfigFileName: '.foorc',
       packageJsonProperty: 'foo',
       cwd: '/foo/package-json/nested/folder',
       defaults: {someDefaultsProperty: true}
@@ -80,8 +81,8 @@ describe('findConfigUp()', () => {
 
     expect(() =>
       findConfigUp({
-        rawConfigFileName: '.foorc',
-        packageJsonProperty: 'foo'
+        packageJsonProperty: 'foo',
+        defaults: {}
       })
     ).not.toThrow();
   });
