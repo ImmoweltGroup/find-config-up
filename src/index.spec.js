@@ -1,33 +1,13 @@
 // @flow
 
+jest.mock('./utils.js');
+
+const utils: any = require('./utils.js');
 const findConfigUp = require('./index.js');
 
-const mockFs = {
-  '/foo/raw-config/nested/folder/some.json': '{}',
-  '/foo/raw-config/nested/package.json': '{}',
-  '/foo/raw-config/.foorc': '{"someRawRcProperty": true}',
-
-  '/foo/package-json/nested/folder/package.json': '{}',
-  '/foo/package-json/nested/package.json': '{}',
-  '/foo/package-json/package.json': '{"foo": {"somePackageJsonProperty": true}}'
-};
-
 describe('findConfigUp()', () => {
-  let readFileAsync;
-  let findUp;
-
-  beforeEach(() => {
-    readFileAsync = jest
-      .spyOn(findConfigUp._utils, 'readFileAsync')
-      .mockImplementation(jest.fn(path => mockFs[path]));
-    findUp = jest
-      .spyOn(findConfigUp._utils, 'findUp')
-      .mockImplementation(jest.fn());
-  });
-
   afterEach(() => {
-    readFileAsync.mockRestore();
-    findUp.mockRestore();
+    jest.resetAllMocks();
   });
 
   it('should be a function', () => {
@@ -35,7 +15,10 @@ describe('findConfigUp()', () => {
   });
 
   it('should return the contents of the provided "rawConfigFileName" filename if one was found up the filesystem tree', async () => {
-    findUp.mockReturnValueOnce('/foo/raw-config/.foorc');
+    utils.findUp.mockReturnValueOnce('/foo/raw-config/.foorc');
+    utils.readJson.mockReturnValueOnce({
+      someRawRcProperty: true
+    });
 
     const cfg = await findConfigUp({
       rawConfigFileName: '.foorc',
@@ -48,11 +31,15 @@ describe('findConfigUp()', () => {
   });
 
   it('should return the contents of the "package.json" with the given "packageJsonProperty" property if one was found up the filesystem tree', async () => {
-    findUp
-      .mockReturnValueOnce(null)
-      .mockReturnValueOnce('/foo/package-json/nested/folder/package.json')
-      .mockReturnValueOnce('/foo/package-json/nested/package.json')
-      .mockReturnValue('/foo/package-json/package.json');
+    utils.findUp.mockReturnValue(null);
+    utils.resolvePackageJsonConfigPath.mockReturnValue(
+      '/foo/package-json/package.json'
+    );
+    utils.readJson.mockReturnValue({
+      foo: {
+        somePackageJsonProperty: true
+      }
+    });
 
     const cfg = await findConfigUp({
       rawConfigFileName: '.foorc',
@@ -65,7 +52,7 @@ describe('findConfigUp()', () => {
   });
 
   it('should return the defaults if no file was found', async () => {
-    findUp.mockReturnValue(null);
+    utils.findUp.mockReturnValue(null);
 
     const cfg = await findConfigUp({
       packageJsonProperty: 'foo',
@@ -77,7 +64,7 @@ describe('findConfigUp()', () => {
   });
 
   it('should not crash if no cwd was given', () => {
-    findUp.mockReturnValue(null);
+    utils.findUp.mockReturnValue(null);
 
     expect(() =>
       findConfigUp({
@@ -85,5 +72,27 @@ describe('findConfigUp()', () => {
         defaults: {}
       })
     ).not.toThrow();
+  });
+});
+
+describe('findConfigUp.resolveConfigPath()', () => {
+  afterEach(() => {
+    jest.resetAllMocks();
+  });
+
+  it('should be a function', () => {
+    expect(typeof findConfigUp.resolveConfigPath).toBe('function');
+  });
+
+  it('should try to resolve the raw config path and if not found fall back to resolving the package.json path', async () => {
+    utils.findUp.mockReturnValue(null);
+    utils.resolvePackageJsonConfigPath.mockReturnValue('/foo/bar/package.json');
+
+    const path = await findConfigUp.resolveConfigPath({
+      rawConfigFileName: '.foorc',
+      packageJsonProperty: 'foo'
+    });
+
+    expect(path).toBe('/foo/bar/package.json');
   });
 });

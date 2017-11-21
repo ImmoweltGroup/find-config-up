@@ -44,7 +44,7 @@
       "semantic-release pre && npm publish && semantic-release post"
   },
   "lint-staged": {
-    "**/*.{js,json,css}": ["prettier --write", "git add"]
+    "src/**/*.{js,json,css}": ["prettier --write", "git add"]
   },
   "dependencies": {
     "find-up": "^2.1.0",

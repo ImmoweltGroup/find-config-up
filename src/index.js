@@ -7,15 +7,8 @@ type OptionsType = {
   cwd?: string
 };
 
-const fs = require('fs');
-const {promisify} = require('util');
 const merge = require('lodash/merge');
-const findUp = require('find-up');
-
-const _utils = {
-  readFileAsync: promisify(fs.readFile),
-  findUp
-};
+const utils = require('./utils.js');
 
 async function findConfigUp(options: OptionsType): Promise<any> {
   const {
@@ -27,45 +20,50 @@ async function findConfigUp(options: OptionsType): Promise<any> {
   let config;
 
   if (rawConfigFileName && rawConfigFileName.length) {
-    const rawConfigPath = await _utils.findUp(rawConfigFileName, {cwd});
+    const rawConfigPath = await utils.findUp(rawConfigFileName, {cwd});
 
     if (rawConfigPath && rawConfigPath.length) {
-      config = await readJson(rawConfigPath);
+      config = await utils.readJson(rawConfigPath);
     }
   }
 
   if (!config) {
-    config = await readPackageJsonUp(packageJsonProperty, cwd);
+    const configPath = await utils.resolvePackageJsonConfigPath(
+      packageJsonProperty,
+      cwd
+    );
+
+    if (configPath && configPath.length) {
+      const packageJson = await utils.readJson(configPath);
+
+      config = packageJson[packageJsonProperty];
+    }
   }
 
   return merge({}, defaults, config);
 }
-findConfigUp._utils = _utils;
 
-async function readPackageJsonUp(propertyName: string, cwd: string) {
-  const filePath = await _utils.findUp('package.json', {cwd});
+async function resolveConfigPath(options: {
+  cwd?: string,
+  rawConfigFileName?: string,
+  packageJsonProperty: string
+}): Promise<string | void> {
+  const {cwd = process.cwd(), rawConfigFileName, packageJsonProperty} = options;
+  let configPath;
 
-  if (!filePath) {
-    return undefined;
+  if (rawConfigFileName && rawConfigFileName.length) {
+    configPath = await utils.findUp(rawConfigFileName, {cwd});
   }
 
-  const pkg = await readJson(filePath);
-
-  const config = pkg[propertyName];
-
-  if (typeof config === 'object') {
-    return config;
+  if (!configPath) {
+    configPath = await utils.resolvePackageJsonConfigPath(
+      packageJsonProperty,
+      cwd
+    );
   }
 
-  const pathPartials = cwd.split('/');
-  pathPartials.pop();
-
-  return readPackageJsonUp(propertyName, pathPartials.join('/'));
-}
-async function readJson(path: string | any): Promise<Object> {
-  const contents = await _utils.readFileAsync(path, 'utf8');
-
-  return JSON.parse(contents);
+  return configPath;
 }
 
 module.exports = findConfigUp;
+module.exports.resolveConfigPath = resolveConfigPath;
