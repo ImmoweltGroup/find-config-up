@@ -12,7 +12,7 @@ install:
   - yarn
 script:
   - yarn lint
-  - yarn test
+  - yarn test --coverage
   - yarn build
 after_success:
   - yarn release
