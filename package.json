@@ -52,7 +52,7 @@
     "lodash": "^4.17.4"
   },
   "devDependencies": {
-    "@immowelt/babel-preset-immowelt-node": "1.1.0",
+    "@immowelt/babel-preset-immowelt-node": "1.1.1",
     "@immowelt/eslint-config-immowelt-react": "2.0.4",
     "@immowelt/jest-preset-node": "1.0.1",
     "@immowelt/styleguide-javascript": "1.0.11",
