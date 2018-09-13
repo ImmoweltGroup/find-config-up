@@ -7,7 +7,7 @@ type OptionsType = {
   cwd?: string
 };
 
-const merge = require('lodash/merge');
+const merge = require('lodash.merge');
 const utils = require('./utils.js');
 
 async function findConfigUp(options: OptionsType): Promise<any> {

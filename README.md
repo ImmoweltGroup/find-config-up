@@ -12,17 +12,13 @@ Resolve your packages configuration from a `.*rc` or `package.json` file with a 
 ## Install
 
 ```sh
-$ npm install find-config-up
-```
-
-or
-
-```sh
 $ yarn add find-config-up
 ```
 
 ## API
+
 #### Getting started
+
 ```js
 const findConfigUp = require('find-config-up');
 
@@ -45,20 +41,27 @@ const findConfigUp = require('find-config-up');
 ```
 
 #### Options
+
 ##### `rawConfigFileName: string` (Optional)
+
 The file name of your preffered `.rc` file, e.g. `.babelrc`, which should be resolved up the file-system tree.
 
 ##### `packageJsonProperty: string`
+
 The property name which should be resolved in the `package.json` files up the file-system tree.
 
 ##### `defaults: Object`
+
 The defaults which will be recursively merged with the results from the file-system.
 
 ##### `cwd: string` (Optional)
+
 A custom current working directory, falls back to `process.cwd()`.
 
 ## Contributing
+
 See the `CONTRIBUTING.md` file at the root of the repository.
 
 ## Licensing
+
 See the `LICENSE` file at the root of the repository.
