@@ -53,7 +53,7 @@
     "flow-copy-source": "2.0.6",
     "flow-typed": "2.5.2",
     "jest": "23.6.0",
-    "mock-fs": "4.10.0",
+    "mock-fs": "4.10.1",
     "prettier": "1.17.1",
     "rimraf": "2.6.3",
     "semantic-release": "13.4.1"
